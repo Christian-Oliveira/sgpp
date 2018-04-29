@@ -1,0 +1,25 @@
+{% extends 'base.html' %} 
+
+{% load widget_tweaks %}
+
+{% block title %}Novo Projeto{% endblock %} 
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+  <a href="{% url 'home' %}">Home</a>
+</li>
+<li class="breadcrumb-item">
+  <a href="{% url 'project:index' %}">Projetos</a>
+</li>
+<li class="breadcrumb-item active">Novo Projeto</li>
+{% endblock %} 
+
+{% block content %}
+<form method="post" novalidate>
+  {% csrf_token %} 
+  
+  {% include 'includes/form.html' %}
+  <a class="btn btn-primary" href="{% url 'project:index' %}">Voltar</a>
+  <button type="submit" class="btn btn-success">Cadastrar</button>
+</form>
+{% endblock %}

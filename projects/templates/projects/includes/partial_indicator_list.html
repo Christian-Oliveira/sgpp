@@ -1,0 +1,14 @@
+{% for list in indicator_list %}
+<li class="list-group-item">
+    <div class="float-left">
+        {{ list.indicator.name }}
+        <br/>
+        <strong>Máx:</strong> {{ list.max_value }}
+        <strong class="ml-2">Min:</strong> {{ list.min_value }}
+    </div>
+
+    <div class="float-right">
+        <a class="btn btn-sm btn-primary" href="{% url 'project:inform_indicator' pk=list.pk %}">Informar</a>
+    </div>
+</li>
+{% endfor %}

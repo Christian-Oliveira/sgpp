@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks project_tags %}
+
+{% block title %}Projetos{% endblock %} 
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+  <a href="{% url 'home' %}">Home</a>
+</li>
+<li class="breadcrumb-item active">Projetos</li>
+{% endblock %} 
+
+{% block content %}
+<div class="mb-2 float-left">
+    <a class="btn btn-success" href="{% url 'project:create' %}">Adicionar</a>
+</div>
+
+<div class="mb-2 float-right">
+    <form class="form-inline my-lg-0" action="{% url 'project:search' %}" method="GET">
+        <input class="form-control mr-sm-2" type="text" placeholder="Pesquisar" aria-label="Search" name="q">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+    </form>
+</div>
+
+<table class="table table-striped table-responsive-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th>Projeto</th>
+            <th>Gerente</th>
+            <th>Orçamento</th>
+            <th>Classificação de Risco</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for project in project_list %}
+        <tr>
+            <td><a href="{% url 'project:detail' pk=project.pk %}">{{ project.name }}</a></td>
+            <td>{{ project.manager }}</td>
+            <td>R$ {{ project.budget }}</td>
+            <td><span class="badge badge-{{ project|get_rating_css_class }}">{{ project.get_rating_display }}</span></td>
+            <td><span class="badge badge-{{ project|get_status_css_class }}">{{ project.get_status_display }}</span></td>
+        </tr>
+        {% endfor %}              
+    </tbody>
+</table>
+
+{% include 'includes/pagination.html' %}
+
+{% endblock %}

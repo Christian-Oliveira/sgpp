@@ -1,0 +1,30 @@
+{% extends 'base.html' %} 
+
+{% load static %} 
+
+{% block title %}Relatórios{% endblock %} 
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'home' %}">Home</a>
+</li>
+<li class="breadcrumb-item active">Relatórios</li>
+{% endblock %} 
+
+{% block content %}
+
+<h5>Relatório</h5>
+
+<ul class="nav flex-column">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'report:by_indicator' %}">Indicadores do Projeto</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'report:by_phase' %}">Fases do Projeto</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'report:by_status' %}">Projetos Cancelados</a>
+    </li>
+</ul>
+
+{% endblock %}

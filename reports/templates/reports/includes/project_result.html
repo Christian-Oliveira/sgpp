@@ -1,0 +1,60 @@
+{% load static %}
+<!doctype html>
+<html>
+
+<head>
+    <title>Indicadores dos Projetos</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h3 class="mt-2 mb-4 text-center">Fases do Projeto - {{ result.all.0.project }}</h3>
+
+        <div class="row">
+            <div class="col-md-2">
+                <ul class="list-group list-group-flush"  id="indicator-list">
+                    {% for list in indicator_list %}
+                    <li class="list-group-item">
+                        {{ list.indicator.name }}
+                        <br/>
+                        <strong>Máx:</strong> {{ list.max_value }}
+                        <br/>
+                        <strong>Min:</strong> {{ list.min_value }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-10 card-deck">
+                {% for k,phase_name in phases %}
+                    
+                <div class="card">
+                    <div class="card-header">
+                        {{ phase_name }}
+                    </div>
+                    <ul class="list-group list-group-flush">
+
+                        {% for monitor in result %}
+                            {% ifequal monitor.phase k%}
+                        <li class="list-group-item">
+                            {{ monitor.indicator }}
+                            <br/>
+                            <strong>Informado:</strong> {{ monitor.value }}
+                        </li>
+                            {% endifequal%}
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                {% endfor%}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

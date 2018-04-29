@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html>
+
+<head>
+    <title>Projetos Cancelados</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h3 class="mt-2 mb-2 text-center">Lista de Projetos Cancelados</h3>
+
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Projeto</th>
+                    <th>Justificativa</th>
+                    <th>Feito Por</th>
+                    <th>Data do Cancelamento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project_status in result %}
+                <tr>
+                    <th>{{ project_status.project.name }}</th>
+                    <th>{{ project_status.description }}</th>
+                    <th>{{ project_status.user.username }}</th>
+                    <th>{{ project_status.created }}</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</body>
+
+</html>

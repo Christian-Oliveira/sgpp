@@ -1,0 +1,13 @@
+{% for indicator in indicator_list %}
+<tr>
+    <td>{{ indicator.name }}</td>
+    <td>
+        <a class="btn btn-sm btn-warning" href="{% url 'indicator:update' indicator.id %}">Editar</a>
+        <a class="btn btn-danger btn-sm" href="{% url 'indicator:delete' indicator.id %}">Excluir</a>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="3" class="text-center bg-warning">Sem indicadores</td>
+</tr>
+{% endfor %}

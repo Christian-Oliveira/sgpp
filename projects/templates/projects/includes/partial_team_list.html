@@ -1,0 +1,8 @@
+{% for member in team_list %}
+<li class="list-group-item">
+    <div class="float-left">{{ member.name }}</div>
+    <div class="float-right">
+        <a class="btn btn-sm btn-danger" href="{% url 'project:delete_member' pk=member.pk %}">Excluir</a>
+    </div>
+</li>
+{% endfor %}

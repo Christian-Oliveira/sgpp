@@ -1,0 +1,25 @@
+{% extends 'base.html' %} 
+
+{% load widget_tweaks %}
+
+{% block title %}Novo Indicador{% endblock %} 
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+  <a href="{% url 'home' %}">Home</a>
+</li>
+<li class="breadcrumb-item">
+  <a href="{% url 'indicator:index' %}">Indicadores</a>
+</li>
+<li class="breadcrumb-item active">Novo Indicador</li>
+{% endblock %} 
+
+{% block content %}
+<form method="post" novalidate>
+  {% csrf_token %} 
+  
+  {% include 'includes/form.html' %}
+  <a class="btn btn-primary" href="{% url 'indicator:index' %}">Voltar</a>
+  <button type="submit" class="btn btn-success">Cadastrar</button>
+</form>
+{% endblock %}

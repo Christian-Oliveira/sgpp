@@ -1,0 +1,27 @@
+{% extends 'base.html' %} 
+
+{% load static %} 
+
+{% block title %}Relatórios{% endblock %} 
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'home' %}">Home</a>
+</li>
+<li class="breadcrumb-item "><a href="{% url 'report:index' %}">Relatórios</a></li>
+<li class="breadcrumb-item active">Fases do Projetos</li>
+{% endblock %} 
+
+{% block content %}
+
+<h5>Relatório de Fases do Projeto</h5>
+
+<form action="{% url 'report:by_phase' %}" method="post">
+    {% csrf_token %}
+
+    {% include 'includes/form.html' %}
+    
+    <button type="submit" class="btn btn-primary">Pesquisar</button>
+</form>
+
+{% endblock %}

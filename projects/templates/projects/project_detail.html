@@ -1,0 +1,254 @@
+{% extends 'base.html' %} 
+
+{% load static project_tags %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'home' %}">Home</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'project:index' %}">Projetos</a>
+</li>
+<li class="breadcrumb-item active">{{ project.name }}</li>
+{% endblock %} 
+
+{% block content %}
+
+<div class="btn-toolbar mb-2 d-none d-md-block" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <a class="btn btn-secondary" href="{% url 'project:update' pk=project.pk %}">Editar Projeto</a>
+    </div>
+    <div class="btn-group mb-xs-2 mr-2" role="group" aria-label="First group">
+        <a class="btn btn-secondary" href="{% url 'project:connect_indicator' pk=project.pk %}">Associar Indicador</a>
+    </div>
+    <div class="btn-group mb-xs-2 mr-2" role="group" aria-label="First group">
+        <a class="btn btn-secondary" href="{% url 'project:add_activity' pk=project.pk %}">Adicionar Atividade</a>
+    </div>
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <a class="btn btn-secondary" href="{% url 'project:add_member' pk=project.pk %}">Adcionar Membro</a>
+    </div>
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <a class="btn btn-danger" href="{% url 'project:delete' pk=project.pk %}">Excluir Projeto</a>
+    </div>
+</div>
+
+<!--Grupo de botoes para as telas pequenas-->
+<div class="btn-group mb-2 d-md-none" role="group">
+    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Ações
+    </button>
+    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+        <a class="btn btn-secondary dropdown-item" href="{% url 'project:update' pk=project.pk %}">Editar Projeto</a>
+        <a class="btn btn-secondary dropdown-item" href="{% url 'project:connect_indicator' pk=project.pk %}">Associar Indicador</a>
+        <a class="btn btn-secondary dropdown-item" href="{% url 'project:add_activity' pk=project.pk %}">Adicionar Atividade</a>
+        <a class="btn btn-secondary dropdown-item" href="{% url 'project:add_member' pk=project.pk %}">Adcionar Membro</a>
+        <a class="btn btn-danger dropdown-item" href="{% url 'project:delete' pk=project.pk %}">Excluir Projeto</a>
+    </div>
+</div>
+
+<div class="card">
+
+    <!--Cabecalho com as abas-->
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="project-tab" data-toggle="tab" href="#project" role="tab" aria-controls="home" aria-selected="true">Projeto</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="complementary-tab" data-toggle="tab" href="#complementary" role="tab" aria-controls="complementary" aria-selected="false">Informações Complementares</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="status-history-tab" data-toggle="tab" href="#status-history" role="tab" aria-controls="status-history" aria-selected="false">Histórico de Status</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="false">Atividades</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="followup-tab" data-toggle="tab" href="#followup" role="tab" aria-controls="followup" aria-selected="false">Acompanhamentos</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body">
+        <div class="tab-content" id="myTabContent">
+
+            <!-- Aba do Projeto -->
+            <div class="tab-pane fade show active" id="project" role="tabpanel" aria-labelledby="project-tab">
+                <h5 class="card-title">{{ project.name }}
+                    <span class="badge badge-{{ project|get_rating_css_class }}">{{ project.get_rating_display }}</span>
+                    <span class="badge badge-{{ project|get_status_css_class }}">{{ project.get_status_display }}</span>
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">Última atualização - {{ project.modified }}</h6>
+
+                <dl class="row">
+                    <dt class="col-sm-3 col-md-2">Gerente Responsável</dt>
+                    <dd class="col-md-9">{{ project.manager.get_full_name }}</dd>
+                    <dt class="col-sm-3 col-md-2">Líder do Projeto</dt>
+                    <dd class="col-md-9">{{ project.leader.get_full_name }}</dd>
+
+                    <dt class="col-sm-2 col-md-2">Datas</dt>
+                    <dd class="col-sm-10 col-md-10">
+                        <dl class="row">
+                            <dt class="col-sm-3 col-md-2">Início</dt>
+                            <dd class="col-sm-9 col-md-10">{{ project.start_date|date:"d/m/y" }}</dd>
+                        </dl>
+                        <dl class="row">
+                            <dt class="col-sm-3 col-md-2">Previsão de Término</dt>
+                            <dd class="col-sm-9 col-md-10">{{ project.forecast_finish_date|date:"d/m/y" }}</dd>
+                        </dl>
+                        <dl class="row">
+                            <dt class="col-sm-3 col-md-2">Término Real</dt>
+                            <dd class="col-sm-9 col-md-10">{{ project.end_date|date:"d/m/y" }}</dd>
+                        </dl>
+                    </dd>
+
+                    <dt class="col-sm-2 col-md-2">Orçamento</dt>
+                    <dd class="col-sm-10 col-md-10">R$ {{ project.budget }}</dd>
+
+                    <dt class="col-sm-2 col-md-2">Descrição</dt>
+                    <dd class="col-sm-10 col-md-10 text-justify">{{ project.description }}</dd>
+                </dl>
+
+            </div>
+
+            <!-- Aba do Complemento -->
+            <div class="tab-pane fade show" id="complementary" role="tabpanel" aria-labelledby="complementary-tab">
+                <div class="card-deck">
+
+                    <!-- Indicadores -->
+                    <div class="card">
+                        <div class="card-header">
+                            Indicadores
+                        </div>
+                        <ul class="list-group list-group-flush"  id="indicator-list">
+                            {% include 'projects/includes/partial_indicator_list.html' %}
+                        </ul>
+                    </div>
+
+                    <!-- Equipe -->
+                    <div class="card">
+                        <div class="card-header">
+                            Equipe
+                        </div>
+                        <ul class="list-group list-group-flush" id="team-list">
+                            {% include 'projects/includes/partial_team_list.html' %}
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Aba do Historico do status -->
+            <div class="tab-pane fade" id="status-history" role="tabpanel" aria-labelledby="status-history-tab">
+
+                <h3>
+                    {% ifequal project.status 1 %}
+                    Em Análise                    
+                    <small class="text-muted">Análise Realizada</small>
+                    {% endifequal %}
+
+                    {% ifequal project.status 2 %}
+                    Análise Realizada                    
+                    <small class="text-muted">Análise Aprovada</small>
+                    {% endifequal %}
+
+                    {% ifequal project.status 3 %}
+                    Análise Aprovada                   
+                    <small class="text-muted">Iniciado</small>
+                    {% endifequal %}
+
+                    {% ifequal project.status 4 %}
+                    Iniciado                    
+                    <small class="text-muted">Planejado</small>
+                    {% endifequal %}
+
+                    {% ifequal project.status 5 %}
+                    Planejado                   
+                    <small class="text-muted">Em Andamento</small>
+                    {% endifequal %}
+
+                    {% ifequal project.status 6 %}
+                    Em Andamento                    
+                    <small class="text-muted">Encerrado</small>
+                    {% endifequal %}
+
+                    {% ifequal project.status 7 %}
+                    Enderrado                 
+                    {% endifequal %}
+                </h3>
+                
+                {% if project.status|in_list:'1,2,3,4,5,6' %}
+                <form action="{% url 'project:change_status' pk=project.pk %}" method="post">
+                    {% csrf_token %}
+
+                    {% ifequal project.status 2 %}
+                    <div class="form-group">
+                        <label for="description" class="control-label">Justificativa:</label>
+                        <textarea class="form-control" id="description" rows="5" name="description" required></textarea>
+                    </div>
+                    {% endifequal %}
+                    
+                    <a class="btn btn-danger" href="{% url 'project:cancel' pk=project.pk %}">Cancelar Projeto</a>
+                    <button type="submit" class="btn btn-primary">Atualizar Status</button>
+                </form>
+                {% endif %}
+
+
+                <ul class="list-group list-group-flush mt-2">
+                    {% for status in status_list %}
+                    <li class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Alteração de Status feita por {{ status.user }}</h5>
+                            <small>{{ status.created }}</small>
+                        </div>
+                        <p class="mb-1">{{ status.description|default_if_none:"--" }}</p>
+                        <label class="font-weight-bold">Status:&nbsp;</label>
+                        <span class="badge badge-{{ status|get_status_css_class }}">{{ status.get_status_display }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Aba das Atividades -->
+            <div class="tab-pane fade" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+
+                <ul class="list-group list-group-flush">
+                    {% for activity in activity_list %}
+                    <li class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ activity.name }}</h5>
+                            <a class="btn btn-sm btn-danger" href="{% url 'project:delete_activity' pk=activity.pk %}">Excluir</a>
+                        </div>
+                        <p class="mb-1">{{ activity.description }}</p>
+                        <label class="font-weight-bold">Orçamento: R$ {{ activity.budget }}</label>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Aba do Acompanhamento -->
+            <div class="tab-pane fade" id="followup" role="tabpanel" aria-labelledby="followup-tab">
+            
+                <ul class="list-group list-group-flush">
+                    
+                    {% for follow_up in follow_up_list %}
+                    <li class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Acompanhamento</h5>
+                            <small>{{ follow_up.created|date:"d/m/Y" }}</small>
+                        </div>
+                        <p class="mb-1">{{ follow_up.description }}</p>
+                        <label class="font-weight-bold">Usuário:&nbsp;</label>
+                        {{ follow_up.user.username }}
+                    </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

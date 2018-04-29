@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Projetos{% endblock %} 
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+  <a href="{% url 'home' %}">Home</a>
+</li>
+<li class="breadcrumb-item active">Cancelar Projeto</li>
+{% endblock %} 
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <h4>Cancelar Projeto?</h4>
+    <p>Deseja realmente cancelar o projeto? <strong>{{ project.name }}</strong></p>
+    {% include 'includes/form.html' %}
+    <a class="btn btn-primary" href="{% url 'project:detail' pk=project.pk %}">Voltar</a>
+    <button type="submit" class="btn btn-danger">Cancelar Projeto</button>
+</form>
+{% endblock %}

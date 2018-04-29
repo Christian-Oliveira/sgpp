@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Indicadores{% endblock %} 
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+  <a href="{% url 'home' %}">Home</a>
+</li>
+<li class="breadcrumb-item active">Indicadores</li>
+{% endblock %} 
+
+{% block content %}
+
+<div class="mb-2 float-left">
+    <a class="btn btn-success" href="{% url 'indicator:create' %}">Adicionar Indicador</a>
+</div>
+
+<div class="mb-2 float-right">
+    <form class="form-inline my-lg-0" action="{% url 'indicator:search' %}" method="GET">
+        <input class="form-control mr-sm-2" type="text" placeholder="Pesquisar" aria-label="Search" name="q">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+    </form>
+</div>
+
+<table class="table table-striped table-responsive-sm" id="indicator-table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Indicador</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% include 'indicators/includes/partial_indicator_list.html' %}           
+    </tbody>
+</table>
+
+{% include 'includes/pagination.html' %}
+
+{% endblock %}
