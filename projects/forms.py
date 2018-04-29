@@ -60,7 +60,7 @@ class NewProjectForm(forms.ModelForm):
 
         data = cleaned_data.get('forecast_finish_date')
 
-        if cleaned_data.get('start_date').strftime('%d/%m/%Y') > data.strftime('%d/%m/%Y'):
+        if cleaned_data.get('start_date') > data:
             raise forms.ValidationError(
                 'A previsão de término não pode ser menor que a data de início do projeto.')
 
@@ -100,7 +100,7 @@ class UpdateProjectForm(forms.ModelForm):
 
         data = cleaned_data.get('forecast_finish_date')
 
-        if cleaned_data.get('start_date').strftime('%d/%m/%Y') > data.strftime('%d/%m/%Y'):
+        if cleaned_data.get('start_date') > data:
             raise forms.ValidationError(
                 'A previsão de término não pode ser menor que a data de início do projeto.')
 
