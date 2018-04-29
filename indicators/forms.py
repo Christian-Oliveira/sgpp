@@ -12,15 +12,18 @@ class NewIndicatorForm(forms.ModelForm):
         labels = { 'name': ('Nome'), }
 
     
-    def clean(self):
+    def clean_name(self):
         cleaned_data = super(NewIndicatorForm, self).clean()
 
-        name = cleaned_data.get('name')
+        data = cleaned_data.get('name')
 
-        n = Indicator.objects.filter(name=name)
+        n = Indicator.objects.filter(name=data)
 
-        if n.exists:
+        if n.exists():
             raise forms.ValidationError('Este nome já está sendo usado.')
+
+        return data
+
 
 class UpdateIndicatorForm(forms.ModelForm):
 
@@ -29,12 +32,14 @@ class UpdateIndicatorForm(forms.ModelForm):
         fields = ['name',]
         labels = { 'name': ('Nome'), }
 
-    def clean(self):
-        cleaned_data = super(NewIndicatorForm, self).clean()
+    def clean_name(self):
+        cleaned_data = super(UpdateIndicatorForm, self).clean()
 
-        name = cleaned_data.get('name')
+        data = cleaned_data.get('name')
 
-        n = Indicator.objects.filter(name=name)
+        n = Indicator.objects.filter(name=data)
 
-        if n.exists:
+        if n.exists():
             raise forms.ValidationError('Este nome já está sendo usado.')
+
+        return data
