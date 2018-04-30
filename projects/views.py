@@ -421,6 +421,7 @@ def project_add_activity(request, pk):
         else:
             messages.error(
                 request, 'Falha ao cadastrar a atividade do projeto.')
+            return render(request, 'projects/project_add_activity.html', {'form': form})
 
         return redirect(reverse('project:detail', kwargs={'pk': project.pk}))
     else:
